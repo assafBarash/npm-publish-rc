@@ -1,14 +1,39 @@
-import { getCurrentBranchName } from './get-branch-name';
+import {
+  getCurrentBranchName,
+  getCurrentBranchNameCommandString,
+} from './get-branch-name';
 import { expect, test } from '@jest/globals';
+import { CpTestkit } from '../test-utils/cp-testkit';
 
-test('getCurrentBranchName should return the current branch name', () => {
-  const branchName = getCurrentBranchName();
-  expect(branchName).toEqual('main');
-});
+jest.mock('child_process');
 
-test('getCurrentBranchName should handle errors gracefully', () => {
-  const branchName = getCurrentBranchName({
-    execSyncConfig: { cwd: '../../' },
+describe('getCurrentBranchName', () => {
+  const cpTestkit = CpTestkit();
+  beforeEach(() => {
+    cpTestkit.reset();
   });
-  expect(branchName).toEqual(null);
+
+  test('getCurrentBranchName should return the current branch name', () => {
+    cpTestkit
+      .mockExecSync({
+        input: getCurrentBranchNameCommandString,
+        output: 'main',
+      })
+      .setup();
+
+    const branchName = getCurrentBranchName();
+    expect(branchName).toEqual('main');
+  });
+
+  test('getCurrentBranchName should handle errors gracefully', () => {
+    cpTestkit
+      .mockExecSync({
+        input: getCurrentBranchNameCommandString,
+        output: null,
+      })
+      .setup();
+
+    const branchName = getCurrentBranchName();
+    expect(branchName).toEqual(null);
+  });
 });

@@ -4,11 +4,14 @@ type Params = {
   execSyncConfig?: ExecSyncOptions;
 };
 
+export const getCurrentBranchNameCommandString =
+  'git rev-parse --abbrev-ref HEAD';
+
 export const getCurrentBranchName = ({ execSyncConfig }: Params = {}):
   | string
   | null => {
   try {
-    const stdout = execSync('git rev-parse --abbrev-ref HEAD', execSyncConfig);
+    const stdout = execSync(getCurrentBranchNameCommandString, execSyncConfig);
     return stdout.toString().trim();
   } catch (error) {
     console.error(
