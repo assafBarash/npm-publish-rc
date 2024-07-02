@@ -1,13 +1,13 @@
 import { execSync } from 'child_process';
 import { getCurrentBranchName } from './get-branch-name/get-branch-name';
-import { JsonManager } from './json-manager';
+import { NpmPackageDriver } from './npm-package-manager';
 import { getRcVersion } from './get-rc-version/get-rc-version';
 import { processArgs } from './process-args';
 
 const main = async () => {
   const { dryRun, rc } = processArgs();
 
-  const jsonManager = await JsonManager();
+  const jsonManager = await NpmPackageDriver();
   const rcName = typeof rc === 'string' ? rc : getCurrentBranchName();
 
   if (!rcName) {

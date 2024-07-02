@@ -1,6 +1,6 @@
 import { promises as fs } from 'fs';
 
-export const JsonManager = async () => {
+export const NpmPackageDriver = async () => {
   const state = JSON.parse(await fs.readFile('package.json', 'utf8')) as Record<
     string,
     unknown
