@@ -1,6 +1,6 @@
 import { getRcVersion } from './get-rc-version';
 
-describe('getCurrentBranchName', () => {
+describe('getRcVersion', () => {
   test('should get new version name when pre doesnt exist', () => {
     const newVersion = getRcVersion({
       semanticVersion: '1.2.3',
