@@ -25,7 +25,7 @@ const main = async () => {
     execSync('npm run build', { stdio: 'inherit' });
     jsonManager.updateVersion(newVersion);
     jsonManager.write();
-    execSync('npm publish --tag experimental', { stdio: 'inherit' });
+    execSync('npm publish --tag rc', { stdio: 'inherit' });
   }
 };
 
