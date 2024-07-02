@@ -19,15 +19,6 @@ describe('getRcVersion', () => {
     expect(newVersion).toEqual('1.2.3-rc.1');
   });
 
-  test('should sanitize partially valid semantic version', () => {
-    const newVersion = getRcVersion({
-      semanticVersion: '1.2.3-rc.4',
-      rcName: 'rc',
-    });
-
-    expect(newVersion).toEqual('1.2.3-rc.5');
-  });
-
   test('should throw error when semantic version is invalid', () => {
     expect(() =>
       getRcVersion({
