@@ -1,13 +1,14 @@
 {
   "name": "publish-rc",
-  "version": "0.0.2-6",
+  "version": "0.0.1",
   "main": "dist/index.js",
   "scripts": {
     "test": "jest",
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "format": "prettier --write .",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "prestart": "npm run build"
   },
   "author": "Assaf Barash",
   "description": "",

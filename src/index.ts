@@ -1,12 +1,24 @@
 import { execSync } from 'child_process';
-import { promises as fs } from 'fs';
 import { getCurrentBranchName } from './get-branch-name/get-branch-name';
+import { JsonManager } from './json-manager';
+import { getRcVersion } from './get-rc-version/get-rc-version';
 
-const main = () => {
+const main = async () => {
   const branchName = getCurrentBranchName();
+  const jsonManager = await JsonManager();
+
+  if (!branchName) {
+    throw new Error('Branch name not found');
+  }
+
+  const newVersion = getRcVersion({
+    semanticVersion: jsonManager.getVersion(),
+    rcName: branchName,
+  });
 
   execSync('npm run build', { stdio: 'inherit' });
-  execSync('npm version pre', { stdio: 'inherit' });
+  jsonManager.updateVersion(newVersion);
+  jsonManager.write();
 };
 
 main();
