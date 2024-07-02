@@ -2,8 +2,11 @@ import { execSync } from 'child_process';
 import { getCurrentBranchName } from './get-branch-name/get-branch-name';
 import { JsonManager } from './json-manager';
 import { getRcVersion } from './get-rc-version/get-rc-version';
+import { processArgs } from './process-args';
 
 const main = async () => {
+  const { dryRun } = processArgs();
+
   const branchName = getCurrentBranchName();
   const jsonManager = await JsonManager();
 
@@ -13,12 +16,17 @@ const main = async () => {
 
   const newVersion = getRcVersion({
     semanticVersion: jsonManager.getVersion(),
-    rcName: branchName,
+    rcName: branchName as string,
   });
 
-  execSync('npm run build', { stdio: 'inherit' });
-  jsonManager.updateVersion(newVersion);
-  jsonManager.write();
+  if (dryRun) {
+    console.log('## RC Version:', newVersion);
+  } else {
+    execSync('npm run build', { stdio: 'inherit' });
+    jsonManager.updateVersion(newVersion);
+    jsonManager.write();
+    execSync('npm publish --tag experimental', { stdio: 'inherit' });
+  }
 };
 
 main();
