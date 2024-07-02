@@ -5,18 +5,18 @@ import { getRcVersion } from './get-rc-version/get-rc-version';
 import { processArgs } from './process-args';
 
 const main = async () => {
-  const { dryRun } = processArgs();
+  const { dryRun, rc } = processArgs();
 
-  const branchName = getCurrentBranchName();
   const jsonManager = await JsonManager();
+  const rcName = typeof rc === 'string' ? rc : getCurrentBranchName();
 
-  if (!branchName) {
+  if (!rcName) {
     throw new Error('Branch name not found');
   }
 
   const newVersion = getRcVersion({
     semanticVersion: jsonManager.getVersion(),
-    rcName: branchName as string,
+    rcName,
   });
 
   if (dryRun) {
