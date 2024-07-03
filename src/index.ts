@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { processArgs } from './process-args';
 import { publishRc } from './logic/publish-rc';
 import { getRcName } from './logic/get-rc-name';
