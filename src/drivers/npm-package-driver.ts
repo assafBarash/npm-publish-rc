@@ -1,10 +1,8 @@
 import fs from 'fs/promises';
+import { ErrorCodes } from '../utils/error-codes';
 
 export const NpmPackageDriver = async () => {
-  const state = JSON.parse(await fs.readFile('package.json', 'utf8')) as Record<
-    string,
-    unknown
-  >;
+  const state = await readPackageJson();
 
   const driver = {
     getVersion: () => state.version as string,
@@ -15,4 +13,15 @@ export const NpmPackageDriver = async () => {
   };
 
   return driver;
+};
+
+const readPackageJson = async () => {
+  try {
+    const state = JSON.parse(
+      await fs.readFile('package.json', 'utf8'),
+    ) as Record<string, unknown>;
+    return state;
+  } catch (e) {
+    throw new Error(ErrorCodes.InvalidPackageJson);
+  }
 };

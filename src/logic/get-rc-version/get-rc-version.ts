@@ -1,3 +1,5 @@
+import { ErrorCodes } from '../../utils/error-codes';
+
 type Props = {
   semanticVersion: string;
   rcName: string;
@@ -27,7 +29,7 @@ const sanitizeSemanticVersion = (semanticVersion: string) => {
     .map(extractFirstNumber);
 
   if (isNaN(major) || isNaN(minor) || isNaN(patch)) {
-    throw new Error('INVALID_SEMANTIC_VERSION');
+    throw new Error(ErrorCodes.InvalidSemanticVersion);
   }
 
   return `${major}.${minor}.${patch}`;
