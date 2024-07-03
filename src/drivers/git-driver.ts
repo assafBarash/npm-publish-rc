@@ -10,7 +10,7 @@ export const GitDriver = ({ execConfig }: GitDriverConstructor = {}) => {
   const driver = {
     getCurrentBranchName: async (): Promise<string | null> => {
       try {
-        const stdout = await exec('git rev-parse --abbrev-ref HEAD');
+        const { stdout } = await exec('git rev-parse --abbrev-ref HEAD');
         return stdout.toString().trim();
       } catch (error) {
         console.error(
