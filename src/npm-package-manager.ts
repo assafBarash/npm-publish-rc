@@ -1,4 +1,4 @@
-import { promises as fs } from 'fs';
+import fs from 'fs/promises';
 
 export const NpmPackageDriver = async () => {
   const state = JSON.parse(await fs.readFile('package.json', 'utf8')) as Record<
@@ -7,10 +7,10 @@ export const NpmPackageDriver = async () => {
   >;
 
   const manager = {
-    write: () => fs.writeFile('package.json', JSON.stringify(state, null, 2)),
     getVersion: () => state.version as string,
-    updateVersion: (newVersion: string) => {
+    updateVersion: async (newVersion: string) => {
       state.version = newVersion;
+      await fs.writeFile('package.json', JSON.stringify(state, null, 2));
     },
   };
 

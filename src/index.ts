@@ -7,7 +7,7 @@ import { processArgs } from './process-args';
 const main = async () => {
   const { dryRun, rc } = processArgs();
 
-  const jsonManager = await NpmPackageDriver();
+  const npmPackageDriver = await NpmPackageDriver();
   const rcName = typeof rc === 'string' ? rc : getCurrentBranchName();
 
   if (!rcName) {
@@ -15,7 +15,7 @@ const main = async () => {
   }
 
   const newVersion = getRcVersion({
-    semanticVersion: jsonManager.getVersion(),
+    semanticVersion: npmPackageDriver.getVersion(),
     rcName,
   });
 
@@ -23,9 +23,10 @@ const main = async () => {
     console.log('## RC Version:', newVersion);
   } else {
     execSync('npm run build', { stdio: 'inherit' });
-    jsonManager.updateVersion(newVersion);
-    jsonManager.write();
+    // npmDriver.build();
+    await npmPackageDriver.updateVersion(newVersion);
     execSync('npm publish --tag rc', { stdio: 'inherit' });
+    // npmDriver.publish({ tag: 'rc' });
   }
 };
 
