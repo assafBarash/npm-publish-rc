@@ -1,15 +1,14 @@
-import { execSync, ExecSyncOptionsWithBufferEncoding } from 'child_process';
+import { ExecOptions } from 'child_process';
+import { execPromise } from '../utils/exec-promise';
 
 type NpmCliDriverConstructor = {
-  execConfig?: ExecSyncOptionsWithBufferEncoding;
+  execConfig?: ExecOptions;
 };
 
 export const NpmCliDriver = ({
-  execConfig = {
-    stdio: 'inherit',
-  },
+  execConfig = {},
 }: NpmCliDriverConstructor = {}) => {
-  const exec = (command: string) => execSync(command, execConfig);
+  const exec = (command: string) => execPromise(command, execConfig);
 
   const driver = {
     build: () => exec('npm run build'),

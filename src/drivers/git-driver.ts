@@ -1,11 +1,16 @@
-import { ExecSyncOptions, execSync } from 'child_process';
+import { ExecOptions } from 'child_process';
+import { execPromise } from '../utils/exec-promise';
+
+type GitDriverConstructor = {
+  execConfig?: ExecOptions;
+};
 
 export const GitDriver = ({ execConfig }: GitDriverConstructor = {}) => {
-  const exec = (command: string) => execSync(command, execConfig);
+  const exec = (command: string) => execPromise(command, execConfig);
   const driver = {
-    getCurrentBranchName: (): string | null => {
+    getCurrentBranchName: async (): Promise<string | null> => {
       try {
-        const stdout = exec('git rev-parse --abbrev-ref HEAD');
+        const stdout = await exec('git rev-parse --abbrev-ref HEAD');
         return stdout.toString().trim();
       } catch (error) {
         console.error(
@@ -18,8 +23,4 @@ export const GitDriver = ({ execConfig }: GitDriverConstructor = {}) => {
   };
 
   return driver;
-};
-
-type GitDriverConstructor = {
-  execConfig?: ExecSyncOptions;
 };
