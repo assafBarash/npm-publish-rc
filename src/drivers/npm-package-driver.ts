@@ -6,7 +6,7 @@ export const NpmPackageDriver = async () => {
     unknown
   >;
 
-  const manager = {
+  const driver = {
     getVersion: () => state.version as string,
     updateVersion: async (newVersion: string) => {
       state.version = newVersion;
@@ -14,5 +14,5 @@ export const NpmPackageDriver = async () => {
     },
   };
 
-  return manager;
+  return driver;
 };
