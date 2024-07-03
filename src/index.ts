@@ -1,5 +1,5 @@
 import { NpmPackageDriver } from './drivers/npm-package-driver';
-import { getRcVersion } from './get-rc-version/get-rc-version';
+import { getRcVersion } from './logic/get-rc-version/get-rc-version';
 import { processArgs } from './process-args';
 import { NpmCliDriver } from './drivers/npm-cli-driver';
 import { GitDriver } from './drivers/git-driver';
