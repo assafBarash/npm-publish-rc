@@ -9,8 +9,6 @@ const main = async () => {
   const { dryRun, rc } = processArgs();
 
   const rcName = await getRcName(rc);
-  console.log('## RC Name:', rcName);
-
   const newVersion = await getVersionByPackage(rcName);
 
   if (dryRun) console.log('## RC Version:', newVersion);
